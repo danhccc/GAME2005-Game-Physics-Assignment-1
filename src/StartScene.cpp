@@ -14,6 +14,7 @@ StartScene::~StartScene()
 
 void StartScene::draw()
 {
+	TextureManager::Instance()->draw("startBG", 640, 360, 0, 255, true, SDL_FLIP_HORIZONTAL);
 	drawDisplayList();
 }
 
@@ -45,23 +46,35 @@ void StartScene::handleEvents()
 
 void StartScene::start()
 {
+	TextureManager::Instance()->load("../Assets/textures/startBG.png", "startBG");	
+
 	const SDL_Color blue = { 0, 0, 255, 255 };
-	m_pStartLabel = new Label("START SCENE", "Consolas", 80, blue, glm::vec2(400.0f, 40.0f));
+	const SDL_Color yellow = { 255, 232, 31, 255 };
+	const SDL_Color red = {240, 28, 28, 255};
+
+	m_pStartLabel = new Label("Physics Assignment 1", "StarJedi", 70, yellow, glm::vec2(640.0f, 50.0f));
 	m_pStartLabel->setParent(this);
 	addChild(m_pStartLabel);
 
-	m_pInstructionsLabel = new Label("Press 1 to Play", "Consolas", 40, blue, glm::vec2(400.0f, 120.0f));
+	m_pInstructionsLabel = new Label("Press 1 or click START to Play", "StarJedi", 25, yellow, glm::vec2(960.0f, 120.0f));
 	m_pInstructionsLabel->setParent(this);
 	addChild(m_pInstructionsLabel);
 
+	m_pNameLabel = new Label("Made by Hancong Zhang and Zijie Wang", "Consolas", 25, red, glm::vec2(275.0f, 675.0f));
+	m_pNameLabel->setParent(this);
+	addChild(m_pNameLabel);
 
-	m_pShip = new Ship();
-	m_pShip->getTransform()->position = glm::vec2(400.0f, 300.0f); 
-	addChild(m_pShip); 
+	m_pIDLabel = new Label("Student IDs: 101234068    101283316", "Consolas", 25, red, glm::vec2(260.0f, 700.0f));
+	m_pIDLabel->setParent(this);
+	addChild(m_pIDLabel);
+
+	//m_pShip = new Ship();
+	//m_pShip->getTransform()->position = glm::vec2(400.0f, 300.0f); 
+	//addChild(m_pShip); 
 
 	// Start Button
 	m_pStartButton = new Button();
-	m_pStartButton->getTransform()->position = glm::vec2(400.0f, 400.0f); 
+	m_pStartButton->getTransform()->position = glm::vec2(640.0f, 450.0f); 
 
 	m_pStartButton->addEventListener(CLICK, [&]()-> void
 	{
