@@ -39,6 +39,11 @@ private:
 	Button* m_pBackButton;
 	Button* m_pNextButton;
 	Label* m_pInstructionsLabel;
+	Label* m_pMassLabel;
+	Label* m_pPositionLabel;
+	Label* m_pVelocityLabel;
+	Label* m_pAccelerationLabel;
+	Label* m_pForceLabel;
 };
 
 #endif /* defined (__PLAY_SCENE__) */

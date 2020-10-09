@@ -182,7 +182,6 @@ void PlayScene::start()
 	/* Instructions Label */
 	m_pInstructionsLabel = new Label("Press the backtick (`) character to toggle Debug View", "Consolas");
 	m_pInstructionsLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.5f, 700.0f);
-
 	addChild(m_pInstructionsLabel);
 }
 
@@ -243,11 +242,10 @@ void PlayScene::GUI_Function() const
 	}
 
 	
-	if (ImGui::SliderFloat2("Throw Speed | Throw Angle", velocityAngle, 0, 200))
+	if (ImGui::SliderFloat2("Throw Speed | Throw Angle", velocityAngle, 0, 100))
 	{
 		m_pBomb->throwSpeed = glm::vec2(velocityAngle[0], -velocityAngle[1]);
 	}
-
 
 	//static float float3[3] = { 0.0f, 1.0f, 1.5f };
 	//if(ImGui::SliderFloat3("My Slider", float3, 0.0f, 2.0f))
