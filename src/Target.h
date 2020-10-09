@@ -16,6 +16,10 @@ public:
 
 	bool isGravityEnabled = false;
 
+	glm::vec2 throwSpeed;
+	glm::vec2 throwPosition;
+	void doThrow();
+
 private:
 	void m_move();
 	void m_checkBounds();

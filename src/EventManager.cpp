@@ -193,6 +193,8 @@ void EventManager::onMouseButtonDown(SDL_Event& event)
 
     if (event.button.button == SDL_BUTTON_RIGHT)
     {
+        std::cout << "x: " << getMousePosition().x << std::endl;
+        std::cout << "y: " << getMousePosition().y << std::endl;
         m_mouseButtons[RIGHT] = true;
     }
 }

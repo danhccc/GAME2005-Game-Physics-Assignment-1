@@ -10,7 +10,7 @@ Target::Target()
 	const auto size = TextureManager::Instance()->getTextureSize("bomb");
 	setWidth(size.x);
 	setHeight(size.y);
-	getTransform()->position = glm::vec2(100.0f, 100.0f);
+	getTransform()->position = glm::vec2(140.0f, 570.0f);
 	getRigidBody()->velocity = glm::vec2(0, 0);
 	getRigidBody()->isColliding = false;
 
@@ -38,6 +38,12 @@ void Target::update()
 
 void Target::clean()
 {
+}
+
+void Target::doThrow()
+{
+	getTransform()->position = throwPosition;
+	getRigidBody()->velocity = throwSpeed;
 }
 
 void Target::m_move()

@@ -18,6 +18,7 @@ PlayScene::~PlayScene()
 void PlayScene::draw()
 {
 	TextureManager::Instance()->draw("playBackground", 640, 360, 0, 225, true);
+	TextureManager::Instance()->draw("enemy", 625, 570, 0, 225, true, SDL_FLIP_HORIZONTAL);
 
 	drawDisplayList();
 	SDL_SetRenderDrawColor(Renderer::Instance()->getRenderer(), 255, 255, 255, 255);
@@ -119,13 +120,14 @@ void PlayScene::handleEvents()
 void PlayScene::start()
 {
 	TextureManager::Instance()->load("../Assets/textures/playBG.png", "playBackground");
+	TextureManager::Instance()->load("../Assets/sprites/stormtroopers.png", "enemy");
 
 	// Set GUI Title
 	m_guiTitle = "Play Scene";
 	
 	// Plane Sprite
-	m_pPlaneSprite = new Plane();
-	addChild(m_pPlaneSprite);
+	//m_pPlaneSprite = new Plane();
+	//addChild(m_pPlaneSprite);
 
 	// Player Sprite
 	m_pPlayer = new Player();
@@ -134,12 +136,11 @@ void PlayScene::start()
 
 	// Bomb Sprite
 	m_pBomb = new Target();
-	addChild(m_pBomb);
-
-
+	addChild(m_pBomb);	
+	
 	// Back Button
 	m_pBackButton = new Button("../Assets/textures/backButton.png", "backButton", BACK_BUTTON);
-	m_pBackButton->getTransform()->position = glm::vec2(300.0f, 400.0f);
+	m_pBackButton->getTransform()->position = glm::vec2(80.0f, 680.0f);
 	m_pBackButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pBackButton->setActive(false);
@@ -159,7 +160,7 @@ void PlayScene::start()
 
 	// Next Button
 	m_pNextButton = new Button("../Assets/textures/nextButton.png", "nextButton", NEXT_BUTTON);
-	m_pNextButton->getTransform()->position = glm::vec2(500.0f, 400.0f);
+	m_pNextButton->getTransform()->position = glm::vec2(1200.0f, 680.0f);
 	m_pNextButton->addEventListener(CLICK, [&]()-> void
 	{
 		m_pNextButton->setActive(false);
@@ -198,29 +199,55 @@ void PlayScene::GUI_Function() const
 	if(ImGui::Button("THROW"))
 	{
 		std::cout << "THROW Pressed" << std::endl;
+		m_pBomb->doThrow();
+	}
 
+	static int xPlayerPos = 140;
+	static float velocityAngle[2] = { 0 , 0 };
+
+	if (ImGui::Button("a) Solution"))
+	{
+		xPlayerPos = 140;
+		m_pPlayer->getTransform()->position.x = 140;
+		m_pBomb->throwPosition = glm::vec2(140, 570);
+		velocityAngle[0] = 95;
+		velocityAngle[1] = 27;
+		m_pBomb->throwSpeed = glm::vec2(velocityAngle[0], -velocityAngle[1]);
+		m_pBomb->doThrow();
+	}
+
+	if (ImGui::Button("b) Solution"))
+	{
+		xPlayerPos = 140;
+		m_pPlayer->getTransform()->position.x = 140;
+		m_pBomb->throwPosition = glm::vec2(140, 570);
+		velocityAngle[0] = 95;
+		velocityAngle[1] = 45;
+		m_pBomb->throwSpeed = glm::vec2(velocityAngle[0], -velocityAngle[1]);
+		m_pBomb->doThrow();
 	}
 
 	ImGui::Separator();
 
-	static bool isGravityEnabled = false;
-	if (ImGui::Checkbox("Gravity", &isGravityEnabled))
-	{
-		m_pBomb->isGravityEnabled = isGravityEnabled;
-	}
+	//static bool isGravityEnabled = false;
+	//if (ImGui::Checkbox("Gravity", &isGravityEnabled))
+	//{
+		m_pBomb->isGravityEnabled = true/*isGravityEnabled*/;
+	//}
 
-	static int xPlayerPos = 300;
+
 	if (ImGui::SliderInt("Player Position on X", &xPlayerPos, 140, 1140))
 	{
 		m_pPlayer->getTransform()->position.x = xPlayerPos;
-		m_pBomb->getTransform()->position = glm::vec2(xPlayerPos, 620);
+		m_pBomb->throwPosition = glm::vec2(xPlayerPos, 570);
 	}
 
-	static int throwAngle = 0;
-	if (ImGui::SliderInt("Throwing angle", &throwAngle, 0, 90))
+	
+	if (ImGui::SliderFloat2("Throw Speed | Throw Angle", velocityAngle, 0, 200))
 	{
-
+		m_pBomb->throwSpeed = glm::vec2(velocityAngle[0], -velocityAngle[1]);
 	}
+
 
 	//static float float3[3] = { 0.0f, 1.0f, 1.5f };
 	//if(ImGui::SliderFloat3("My Slider", float3, 0.0f, 2.0f))
