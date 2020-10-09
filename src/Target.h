@@ -14,6 +14,8 @@ public:
 	virtual void update() override;
 	virtual void clean() override;
 
+	bool isGravityEnabled = false;
+
 private:
 	void m_move();
 	void m_checkBounds();

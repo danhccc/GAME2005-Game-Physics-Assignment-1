@@ -7,6 +7,7 @@
 #include "Player.h"
 #include "Button.h"
 #include "Label.h"
+#include "Target.h"
 
 class PlayScene : public Scene
 {
@@ -20,6 +21,8 @@ public:
 	virtual void clean() override;
 	virtual void handleEvents() override;
 	virtual void start() override;
+
+
 private:
 	// IMGUI Function
 	void GUI_Function() const;
@@ -27,6 +30,7 @@ private:
 	
 	glm::vec2 m_mousePosition;
 
+	Target* m_pBomb;
 	Plane* m_pPlaneSprite;
 	Player* m_pPlayer;
 	bool m_playerFacingRight;

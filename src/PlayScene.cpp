@@ -132,6 +132,11 @@ void PlayScene::start()
 	addChild(m_pPlayer);
 	m_playerFacingRight = true;
 
+	// Bomb Sprite
+	m_pBomb = new Target();
+	addChild(m_pBomb);
+
+
 	// Back Button
 	m_pBackButton = new Button("../Assets/textures/backButton.png", "backButton", BACK_BUTTON);
 	m_pBackButton->getTransform()->position = glm::vec2(300.0f, 400.0f);
@@ -175,7 +180,7 @@ void PlayScene::start()
 
 	/* Instructions Label */
 	m_pInstructionsLabel = new Label("Press the backtick (`) character to toggle Debug View", "Consolas");
-	m_pInstructionsLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.5f, 500.0f);
+	m_pInstructionsLabel->getTransform()->position = glm::vec2(Config::SCREEN_WIDTH * 0.5f, 700.0f);
 
 	addChild(m_pInstructionsLabel);
 }
@@ -190,23 +195,44 @@ void PlayScene::GUI_Function() const
 	
 	ImGui::Begin("Physics stuff", NULL, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_MenuBar);
 
-	if(ImGui::Button("My Button"))
+	if(ImGui::Button("THROW"))
 	{
-		std::cout << "My Button Pressed" << std::endl;
+		std::cout << "THROW Pressed" << std::endl;
+
 	}
 
 	ImGui::Separator();
 
-	static float float3[3] = { 0.0f, 1.0f, 1.5f };
-	if(ImGui::SliderFloat3("My Slider", float3, 0.0f, 2.0f))
+	static bool isGravityEnabled = false;
+	if (ImGui::Checkbox("Gravity", &isGravityEnabled))
 	{
-		std::cout << float3[0] << std::endl;
-		std::cout << float3[1] << std::endl;
-		std::cout << float3[2] << std::endl;
-		std::cout << "---------------------------\n";
+		m_pBomb->isGravityEnabled = isGravityEnabled;
 	}
+
+	static int xPlayerPos = 300;
+	if (ImGui::SliderInt("Player Position on X", &xPlayerPos, 140, 1140))
+	{
+		m_pPlayer->getTransform()->position.x = xPlayerPos;
+		m_pBomb->getTransform()->position = glm::vec2(xPlayerPos, 620);
+	}
+
+	static int throwAngle = 0;
+	if (ImGui::SliderInt("Throwing angle", &throwAngle, 0, 90))
+	{
+
+	}
+
+	//static float float3[3] = { 0.0f, 1.0f, 1.5f };
+	//if(ImGui::SliderFloat3("My Slider", float3, 0.0f, 2.0f))
+	//{
+	//	std::cout << float3[0] << std::endl;
+	//	std::cout << float3[1] << std::endl;
+	//	std::cout << float3[2] << std::endl;
+	//	std::cout << "---------------------------\n";
+	//}
 	
 	ImGui::End();
+	ImGui::EndFrame();
 
 	// Don't Remove this
 	ImGui::Render();
